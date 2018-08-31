@@ -3,12 +3,12 @@ extern crate base64;
 
 // Convert a hex string to a base64 string
 pub fn hex_to_base64(hex_input: &str) -> String {
-	base64::encode(&hex::decode(hex_input.to_string()).unwrap())
+	base64::encode(&hex::decode(hex_input.to_string()).expect("Failed to encode the decoded hex string"))
 }
 
 // Convert a base64 string to a hex string
 pub fn base64_to_hex(base64_input: &str) -> String {
-	hex::encode(&base64::decode(&base64_input.to_string()).unwrap())
+	hex::encode(&base64::decode(&base64_input.to_string()).expect("Failed to encode the decoded base64 string"))
 }
 
 #[cfg(test)]
