@@ -1,5 +1,8 @@
 extern crate hex;
 
+// CryptoPals Set 1 Challenge 2 - Fixed XOR
+// https://cryptopals.com/sets/1/challenges/2
+
 // XOR two fixed length hex strings together
 pub fn hex_fixed_xor(in1: &str, in2: &str) -> String {
 	let in1_bytes: Vec<u8> = hex::decode(in1.to_string()).expect("Failed to decode the first input hex string");

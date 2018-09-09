@@ -1,6 +1,9 @@
 extern crate hex;
 extern crate base64;
 
+// CryptoPals Set 1 Challenge 1 - Convert hex to base64
+// https://cryptopals.com/sets/1/challenges/1
+
 // Convert a hex string to a base64 string
 pub fn hex_to_base64(hex_input: &str) -> String {
 	base64::encode(&hex::decode(hex_input.to_string()).expect("Failed to encode the decoded hex string"))
