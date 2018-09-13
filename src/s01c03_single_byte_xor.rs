@@ -4,59 +4,60 @@ extern crate hex;
 
 
 // XOR input hex string with every character and output the most likely key and result based on character scores
-
 pub fn single_bit_xor_cypher(ct: &str) -> (String, String) {
 	use std::str::from_utf8;
 	// Convert hex string to bytes
 	let ct_bytes: Vec<u8> = hex::decode(ct.to_string()).expect("Failed to decode the first input hex string");
 	// Find the key that maximises the score by XOR-ing the ciphertext with all possible characters
-	let max_score_key: u8 = ('a'..'z').max_by_key(|key| vector_score(vector_xor(ct_bytes, vec![key; ct_bytes.len()]))).unwrap();
+	// let possible_keys: Vec<u8> = ('a' as u8 ..= 'z' as u8);
+	let max_score_key: u8 = (0..=255).max_by_key(|&key| vector_score(key_xor(ct_bytes.clone(), key))).unwrap();
 	// Return the plaintext
-	(max_score_key.to_string(),from_utf8(&vector_xor(ct_bytes, vec![max_score_key; ct_bytes.len()])).expect("Failed to get String from vector"))
+	(max_score_key.to_string(),from_utf8(&key_xor(ct_bytes.clone(), max_score_key)).expect("Failed to get String from vector").to_string())
 }
 
 // Assign score to characters based on frequency in the english language
 // https://en.wikipedia.org/wiki/Letter_frequency#Relative_frequencies_of_letters_in_the_English_language
-fn char_score(character: char) -> f32 {
+fn char_score(character: char) -> i32 {
 	match character {
-		' ' => 13.0, // space has slightly higher frequncy than e
-		'e' => 12.702,
-		't' => 9.056,
-		'a' => 8.167,
-		'o' => 7.507,
-		'i' => 6.966,
-		'n' => 6.749,
-		's' => 6.327,
-		'h' => 6.094,
-		'r' => 5.987,
-		'd' => 4.253,
-		'l' => 4.025,
-		'c' => 2.782,
-		'u' => 2.758,
-		'm' => 2.406,
-		'w' => 2.236,
-		'f' => 2.28,
-		'g' => 2.015,
-		'y' => 1.974,
-		'p' => 1.929,
-		'b' => 1.492,
-		'v' => 0.978,
-		'k' => 0.772,
-		'j' => 0.153,
-		'x' => 0.150,
-		'q' => 0.095,
-		'z' => 0.074,
-		_ => 0.0001, // non alphabetic or space characters
+		' ' => 13000, // Space has slightly higher frequency than e
+		'e' => 12702,
+		't' => 9056,
+		'a' => 8167,
+		'o' => 7507,
+		'i' => 6966,
+		'n' => 6749,
+		's' => 6327,
+		'h' => 6094,
+		'r' => 5987,
+		'd' => 4253,
+		'l' => 4025,
+		'c' => 2782,
+		'u' => 2758,
+		'm' => 2406,
+		'w' => 2236,
+		'f' => 228,
+		'g' => 2015,
+		'y' => 1974,
+		'p' => 1929,
+		'b' => 1492,
+		'v' => 978,
+		'k' => 772,
+		'j' => 153,
+		'x' => 150,
+		'q' => 95,
+		'z' => 74,
+		_ => 1, // non alphabetic or space characters
 	}
 }
 
-// Give a score to a vector
-fn vector_score(vec: Vec<u8>) -> f32 {
-	vec.iter().fold(0, |score, character| score + char_score(character as char))
+// Give a score to a vector based on the score for each character
+fn vector_score(vec: Vec<u8>) -> i32 {
+	vec.iter().fold(0, |score, character| score + char_score(*character as char))
 }
 
-fn vector_xor(v1: Vec<u8>, v2: Vec<u8>) -> Vec<u8> {
-	v1.iter().zip(v2.iter()).map(|(b1,b2)| b1^b2).collect()
+// XOR a vector with a key
+fn key_xor(v1: Vec<u8>, key: u8) -> Vec<u8> {
+	v1.iter().map(|b1| b1^key).collect()
 }
 
 #[cfg(test)]
