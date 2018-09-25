@@ -1,18 +1,23 @@
 extern crate hex;
+
 // CryptoPals Set 1 Challenge 3 - Single-byte XOR cipher
 // https://cryptopals.com/sets/1/challenges/3
 
 
 // XOR input hex string with every character and output the most likely key and result based on character scores
-pub fn single_bit_xor_cypher(ct: &str) -> (String, String) {
+pub fn single_bit_xor_cypher(ct: &str) -> (char, String) {
 	use std::str::from_utf8;
 	// Convert hex string to bytes
-	let ct_bytes: Vec<u8> = hex::decode(ct.to_string()).expect("Failed to decode the first input hex string");
-	// Find the key that maximises the score by XOR-ing the ciphertext with all possible characters
-	// let possible_keys: Vec<u8> = ('a' as u8 ..= 'z' as u8);
-	let max_score_key: u8 = (0..=255).max_by_key(|&key| vector_score(key_xor(ct_bytes.clone(), key))).unwrap();
-	// Return the plaintext
-	(max_score_key.to_string(),from_utf8(&key_xor(ct_bytes.clone(), max_score_key)).expect("Failed to get String from vector").to_string())
+	let ct_bytes: Vec<u8> = hex::decode(ct.to_string())
+		.expect("Failed to decode the first input hex string");
+	// Find the key that maximises the score by XOR-ing the ciphertext with all possible keys (i.e., u8 range)
+	let max_score_key: u8 = (0..=255)
+		.max_by_key(|&key| vector_score(key_xor(ct_bytes.clone(), key)))
+		.unwrap();
+	// Return the plaintext key and plaintext
+	(max_score_key as char,from_utf8(&key_xor(ct_bytes.clone(), max_score_key))
+		.expect("Failed to get String from vector")
+		.to_string())
 }
 
 // Assign score to characters based on frequency in the english language
@@ -52,12 +57,17 @@ fn char_score(character: char) -> i32 {
 
 // Give a score to a vector based on the score for each character
 fn vector_score(vec: Vec<u8>) -> i32 {
-	vec.iter().fold(0, |score, character| score + char_score(*character as char))
+	vec
+		.iter()
+		.fold(0, |score, character| score + char_score(*character as char))
 }
 
 // XOR a vector with a key
 fn key_xor(v1: Vec<u8>, key: u8) -> Vec<u8> {
-	v1.iter().map(|b1| b1^key).collect()
+	v1
+		.iter()
+		.map(|b1| b1^key)
+		.collect()
 }
 
 #[cfg(test)]
@@ -65,6 +75,8 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_fixed_xor() {
+		assert_eq!(s01c03_single_byte_xor::single_bit_xor_cypher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736").0.to_string(),
+    	"X");
 		assert_eq!(single_bit_xor_cypher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736").1,
     	"Cooking MC's like a pound of bacon");
 	}

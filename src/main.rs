@@ -1,6 +1,7 @@
 mod s01c01_hex_to_base64;
 mod s01c02_fixed_xor;
 mod s01c03_single_byte_xor;
+mod s01c04_detect_char_xor;
 
 // Executes the code for each of the CryptoPals challenges that are in self-contained modules.
 //https://cryptopals.com/
@@ -21,7 +22,18 @@ fn main() {
     println!("Set 1 - Challenge 2 OK");
     // Challenge 3 - Decode single byte XOR cypher
     println!("Running Set 1 - Challenge 3");
+    assert_eq!(s01c03_single_byte_xor::single_bit_xor_cypher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736").0.to_string(),
+    	"X");
     assert_eq!(s01c03_single_byte_xor::single_bit_xor_cypher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736").1,
     	"Cooking MC's like a pound of bacon");
     println!("Set 1 - Challenge 3 OK");
+    // Challenge 4 - 
+    println!("Running Set 1 - Challenge 4");
+    assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").0,
+    	 170);
+    assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").1.to_string(),
+    	 53.to_string());
+    assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").2,
+    	 "Now that the party is jumping\n");
+    println!("Set 1 - Challenge 4 OK");
 }
