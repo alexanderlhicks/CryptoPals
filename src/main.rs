@@ -32,7 +32,7 @@ fn main() {
     assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").0,
     	 170);
     assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").1.to_string(),
-    	 53.to_string());
+    	 5.to_string());
     assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").2,
     	 "Now that the party is jumping\n");
     println!("Set 1 - Challenge 4 OK");

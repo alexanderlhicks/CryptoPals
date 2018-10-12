@@ -15,7 +15,7 @@ pub fn hex_fixed_xor(in1: &str, in2: &str) -> String {
 	let xored: Vec<u8> = in1_bytes
 		.iter()
 		.zip(in2_bytes.iter())
-		.map(|(b1,b2)| b1^b2)
+		.map(|(&b1,&b2)| b1^b2)
 		.collect();
 	hex::encode(&xored)
 }
