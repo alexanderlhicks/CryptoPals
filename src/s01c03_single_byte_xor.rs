@@ -56,14 +56,14 @@ fn char_score(character: char) -> isize {
 }
 
 // Give a score to a vector based on the score for each character
-fn vector_score(vec: &Vec<u8>) -> isize {
+fn vector_score(vec: &[u8]) -> isize {
 	vec
 		.iter()
 		.fold(0, |score, character| score + char_score(*character as char))
 }
 
 // XOR a vector with a key
-fn key_xor(v1: &Vec<u8>, key: u8) -> Vec<u8> {
+fn key_xor(v1: &[u8], key: u8) -> Vec<u8> {
 	v1
 		.iter()
 		.map(|b1| b1^key)

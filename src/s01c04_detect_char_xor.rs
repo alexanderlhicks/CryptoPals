@@ -31,7 +31,7 @@ pub fn detect_char_xor(file_path: &str) -> (usize, char, String) {
 		from_utf8(&single_bit_xor_cypher(&ciphertexts[max_score_ct.0]).1).expect("Failed to get String from vector").to_string())
 }
 
-fn single_bit_xor_cypher(ct_bytes: &Vec<u8>) -> (u8, Vec<u8>) {
+fn single_bit_xor_cypher(ct_bytes: &[u8]) -> (u8, Vec<u8>) {
 	//use std::str::from_utf8;
 	// Convert hex string to bytes
 	//let ct_bytes: Vec<u8> = hex::decode(ct.to_string())
@@ -80,14 +80,14 @@ fn char_score(character: char) -> isize {
 }
 
 // Give a score to a vector based on the score for each character
-fn vector_score(vec: &Vec<u8>) -> isize {
+fn vector_score(vec: &[u8]) -> isize {
 	vec
 		.iter()
 		.fold(0, |score, character| score + char_score(*character as char))
 }
 
 // XOR a vector with a key
-fn key_xor(v1: &Vec<u8>, key: u8) -> Vec<u8> {
+fn key_xor(v1: &[u8], key: u8) -> Vec<u8> {
 	v1
 		.iter()
 		.map(|b1| b1^key)
@@ -99,11 +99,11 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_detect_char_xor() {
-		assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").0,
+		assert_eq!(detect_char_xor("s01c04_ciphertexts.txt").0,
     	 170);
-		assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").1.to_string(),
+		assert_eq!(detect_char_xor("s01c04_ciphertexts.txt").1.to_string(),
 			53.to_string());
-		assert_eq!(s01c04_detect_char_xor::detect_char_xor("s01c04_ciphertexts.txt").2,
+		assert_eq!(detect_char_xor("s01c04_ciphertexts.txt").2,
 			"Now that the party is jumping\n");
 	}
 }
